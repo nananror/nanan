@@ -1,0 +1,52 @@
+import { useState } from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Upload } from "lucide-react";
+
+export default function CutePhotoUploader() {
+  const [image, setImage] = useState(null);
+
+  const handleImageUpload = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImage(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  return (
+    <div className="flex flex-col items-center justify-center min-h-screen bg-pink-200 p-4">
+      <h1 className="text-3xl font-bold text-pink-600 mb-4">Pacarku yang Lucu 💖</h1>
+      <Card className="w-80 p-4 bg-white shadow-lg rounded-2xl border-pink-400 border-2">
+        <CardContent className="flex flex-col items-center justify-center">
+          {image ? (
+            <img
+              src={image}
+              alt="Pacar Lucu"
+              className="w-full h-64 object-cover rounded-lg border-4 border-pink-500"
+            />
+          ) : (
+            <div className="w-full h-64 flex items-center justify-center bg-gray-200 rounded-lg border-dashed border-2 border-gray-400">
+              <p className="text-gray-500">Unggah Foto</p>
+            </div>
+          )}
+          <input
+            type="file"
+            accept="image/*"
+            className="hidden"
+            id="upload"
+            onChange={handleImageUpload}
+          />
+          <label htmlFor="upload">
+            <Button className="mt-4 bg-pink-500 hover:bg-pink-600 text-white flex items-center">
+              <Upload className="mr-2" size={18} /> Pilih Foto
+            </Button>
+          </label>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
